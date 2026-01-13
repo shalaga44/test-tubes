@@ -8,13 +8,13 @@ const TUBE_SCENE := preload("res://scenes/TubeScene.tscn")
 
 var BORDER := 0.1 # in %
 
-onready var counters: Label = $MarginMain/VBoxMain/CountersCont/Counters
-onready var message_cont := $MarginMain/VBoxMain/ErrorMessages
-onready var message: Label = $MarginMain/VBoxMain/ErrorMessages/Message
-onready var instruction_cont := $MarginMain/VBoxMain/Help
-onready var instruction: Label = $MarginMain/VBoxMain/Help/Instruction
+@onready var counters: Label = $MarginMain/VBoxMain/CountersCont/Counters
+@onready var message_cont := $MarginMain/VBoxMain/ErrorMessages
+@onready var message: Label = $MarginMain/VBoxMain/ErrorMessages/Message
+@onready var instruction_cont := $MarginMain/VBoxMain/Help
+@onready var instruction: Label = $MarginMain/VBoxMain/Help/Instruction
 
-onready var tubes: GridContainer = $MarginMain/VBoxMain/MarginTubes/GridTubes
+@onready var tubes: GridContainer = $MarginMain/VBoxMain/MarginTubes/GridTubes
 const TUBES_GAP := 0.1 # in %
 const TUBES_MARGIN := 0.25
 
@@ -36,11 +36,9 @@ func _ready():
 	if !is_instance_valid(Globals.get_level()):
 		print_debug("Level wasn't initialized")
 		menu.close_game()
-	# warning-ignore:return_value_discarded
-	$"/root".connect("size_changed", self, "_on_root_size_changed", [], \
-			CONNECT_DEFERRED)
+	get_tree().root.size_changed.connect(_on_root_size_changed)
 	Globals.game_scene = self
-		
+
 	game = Game.new()
 	instruction.set_text("""Click the tube to take a portion from
 and any other to pour this portion to.""")
@@ -52,21 +50,20 @@ and any other to pour this portion to.""")
 
 
 func _on_root_size_changed() -> void:
-	var ROOT_SIZE: Vector2 = $"/root".get_size()
+	var ROOT_SIZE: Vector2 = get_tree().root.size
 	var tubes_num_coeff: float = (1 - float(tubes_number) / Globals.MAX_TUBES)
 
-	tubes.add_constant_override("hseparation", int(ROOT_SIZE.x * TUBES_GAP \
-			* tubes_num_coeff))
+	tubes.add_theme_constant_override("h_separation", int(ROOT_SIZE.x * TUBES_GAP * tubes_num_coeff))
 	for each in tubes.get_children():
-		each.set_custom_minimum_size(Vector2(ROOT_SIZE.x * 0.15 * tubes_num_coeff,
-				ROOT_SIZE.y * 0.53))
-			
-	var font: DynamicFont = counters.get_font("string_name", "")
+		each.set_custom_minimum_size(Vector2(ROOT_SIZE.x * 0.15 * tubes_num_coeff, ROOT_SIZE.y * 0.53))
+
 	var coeff: int = 3
 	if ROOT_SIZE.y > 1000:
 		coeff = 5
-	font.set_size(int(ROOT_SIZE.y / 30) - coeff)
-	
+
+	# Godot 4: use theme font size overrides instead of get_font()/set_size()
+	counters.add_theme_font_size_override("font_size", int(ROOT_SIZE.y / 30) - coeff)
+
 	message_cont.set_custom_minimum_size(Vector2(0, ROOT_SIZE.y / 8.4))
 	instruction_cont.set_custom_minimum_size(Vector2(0, ROOT_SIZE.y / 8))
 
@@ -74,18 +71,18 @@ func _on_root_size_changed() -> void:
 func show_tubes() -> void:
 	var instructions_for_drain: bool = false
 	for i in tubes_number:
-		var a_tube := TUBE_SCENE.instance()
+		var a_tube := TUBE_SCENE.instantiate()
 		tubes.add_child(a_tube)
 		a_tube.init(i + 1, Globals.get_level().get_tube(i).get_content())
 		a_tube.update_tube(Globals.get_level().get_tube(i).get_content())
 		a_tube.set_pointers(Globals.get_level().get_tube(i).drains)
-		
+
 		if Globals.get_level().get_tube(i).drains != Tube.DRAINS.NECK:
 			if !instructions_for_drain:
 				instruction.set_text(instruction.get_text() + \
 					"\nIf a tube has a faucet at the bottom you can drain a portion from it,\nbut you can't pour in through it")
 				instructions_for_drain = true
-	
+
 	_on_root_size_changed()
 
 
@@ -122,15 +119,13 @@ func _on_tube_clicked(num: int, is_neck: bool) -> void:
 		source_neck = true
 		reset_pointers()
 		if Globals.get_level().check_win_condition():
-			#print_debug("GAME IS WON!")
 			Globals.send_message("GAME IS WON!")
 			end_game()
 		elif game.get_pours() > Globals.MAX_MOVES:
-			#print_debug("GAME IS LOST: TOO MANY MOVES!")
 			Globals.send_message("GAME IS LOST: TOO MANY MOVES!")
 			end_game()
-	
-	
+
+
 func reset_pointers() -> void:
 	var all_tubes: Array = tubes.get_children()
 	for i in all_tubes.size():
@@ -139,22 +134,23 @@ func reset_pointers() -> void:
 
 func message_show(msg: String) -> void:
 	message.set_text("%s\n%s" % [message.get_text(), msg])
-	
-	
+
+
 func message_clear() -> void:
 	message.set_text("")
-	
+
 
 func update_counters() -> void:
-	counters.set_text("MOVES: %2d,  VOLUME: %3d" % [game.get_pours(), \
-			game.get_pours_volume()])
+	counters.set_text("MOVES: %2d,  VOLUME: %3d" % [game.get_pours(), game.get_pours_volume()])
 
 
 func end_game() -> void:
-	$FinishPopup.get_close_button().set_visible(false)
-	$FinishPopup.set_text("%s\n%s" % [get_game_rating(), $FinishPopup.get_text()])
-	$FinishPopup.set_title("Game finished")
-	$FinishPopup.popup_centered()
+	var popup: AcceptDialog = $FinishPopup
+	# In some Godot 4.x builds AcceptDialog may not expose titlebar close-button visibility.
+	# Keep it modal via `exclusive = true` (already set in the scene).
+	popup.dialog_text = "%s\n%s" % [get_game_rating(), popup.dialog_text]
+	popup.title = "Game finished"
+	popup.popup_centered()
 
 
 func _on_FinishPopup_confirmed():
@@ -183,6 +179,3 @@ func _on_ButtonMenu_pressed():
 
 func _on_ButtonRestart_pressed():
 	menu.restart_game()
-
-
-

@@ -8,14 +8,25 @@ const MAX_MOVES := 50
 const MAX_TUBE_VOLUME := 8
 const MAX_TUBES := 16
 
-const VALERIA_palette := PoolColorArray([Color8(204, 6, 5), Color8(59, 131, 189),
-	Color8(250, 210, 1), Color8(246, 246, 246), Color8(87, 166, 57),
-	Color8(108, 70, 117), Color8(255, 117, 20), Color8(132, 195, 190),
-	Color8(234, 137, 154), Color8(130, 137, 143)])
-const EMPTY_COLOR := Color8(0, 0, 0, 96)
-const NO_COLOR := Color.transparent
+# In Godot 4, Color8()/PackedColorArray(...) are not allowed in const expressions.
+# These are safe as runtime-initialized variables.
+var VALERIA_palette: PackedColorArray = PackedColorArray([
+	Color8(204, 6, 5),
+	Color8(59, 131, 189),
+	Color8(250, 210, 1),
+	Color8(246, 246, 246),
+	Color8(87, 166, 57),
+	Color8(108, 70, 117),
+	Color8(255, 117, 20),
+	Color8(132, 195, 190),
+	Color8(234, 137, 154),
+	Color8(130, 137, 143)
+])
 
-var _curr_level: Level setget set_level, get_level
+var EMPTY_COLOR: Color = Color8(0, 0, 0, 96)
+var NO_COLOR: Color = Color.TRANSPARENT
+
+var _curr_level: Level: get = get_level, set = set_level
 var game_scene  # game scene node
 
 const LEVELS_PATH := "res://levels"
@@ -27,9 +38,9 @@ const VPS_MIN := Vector2(800, 600)
 
 func set_message_receiver(receiver_node) -> void:
 	# warning-ignore:return_value_discarded
-	connect("show_message", receiver_node, "message_show", [], CONNECT_DEFERRED)
-	
-	
+	show_message.connect(Callable(receiver_node, "message_show"), CONNECT_DEFERRED)
+
+
 # to show messages to user
 func send_message(msg: String) -> void:
 	emit_signal("show_message", msg)
@@ -37,8 +48,8 @@ func send_message(msg: String) -> void:
 
 func set_level(new_level: Level) -> void:
 	_curr_level = new_level
-	
-	
+
+
 func get_level() -> Level:
 	return _curr_level
 

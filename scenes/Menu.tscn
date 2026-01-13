@@ -2,7 +2,7 @@
 
 [ext_resource path="res://scripts/Menu.gd" type="Script" id=1]
 [ext_resource path="res://assets/title.tres" type="Theme" id=2]
-[ext_resource path="res://assets/fonts/main.tres" type="DynamicFont" id=3]
+[ext_resource path="res://assets/fonts/main.tres" type="FontFile" id=3]
 [ext_resource path="res://assets/buttons.tres" type="Theme" id=4]
 [ext_resource path="res://assets/textedit_styleboxflat.tres" type="StyleBox" id=5]
 [ext_resource path="res://assets/window.tres" type="Theme" id=6]
@@ -28,10 +28,10 @@ __meta__ = {
 [node name="MainHBox" type="HBoxContainer" parent="."]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 2.2627
-margin_top = 3.51273
-margin_right = 2.2627
-margin_bottom = 3.5127
+offset_left = 2.2627
+offset_top = 3.51273
+offset_right = 2.2627
+offset_bottom = 3.5127
 __meta__ = {
 "_edit_use_anchors_": false
 }
@@ -41,50 +41,50 @@ size_flags_horizontal = 2
 size_flags_vertical = 2
 
 [node name="MainVBox" type="VBoxContainer" parent="MainHBox"]
-margin_left = 212.0
-margin_top = 29.0
-margin_right = 812.0
-margin_bottom = 569.0
-rect_min_size = Vector2( 350, 540 )
+offset_left = 212.0
+offset_top = 29.0
+offset_right = 812.0
+offset_bottom = 569.0
+custom_minimum_size = Vector2( 350, 540 )
 size_flags_horizontal = 2
 size_flags_vertical = 4
-custom_constants/separation = 20
+theme_override_constants/separation = 20
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxTitle" type="VBoxContainer" parent="MainHBox/MainVBox"]
-margin_right = 600.0
-margin_bottom = 70.0
+offset_right = 600.0
+offset_bottom = 70.0
 size_flags_horizontal = 3
 size_flags_vertical = 4
 
 [node name="RTLTitle" type="RichTextLabel" parent="MainHBox/MainVBox/VBoxTitle"]
-margin_right = 600.0
-margin_bottom = 36.0
-rect_min_size = Vector2( 150, 0 )
+offset_right = 600.0
+offset_bottom = 36.0
+custom_minimum_size = Vector2( 150, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 4
 theme = ExtResource( 2 )
-custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
-custom_constants/line_separation = 5
+theme_override_colors/font_shadow_color = Color( 0, 0, 0, 1 )
+theme_override_constants/line_separation = 5
 bbcode_enabled = true
-bbcode_text = "[center][color=aqua]TEST TUBES[/color][/center]"
+text = "[center][color=aqua]TEST TUBES[/color][/center]"
 text = "TEST TUBES"
 fit_content_height = true
 
 [node name="RTLSubtitle" type="RichTextLabel" parent="MainHBox/MainVBox/VBoxTitle"]
-margin_top = 40.0
-margin_right = 600.0
-margin_bottom = 70.0
-rect_min_size = Vector2( 150, 0 )
+offset_top = 40.0
+offset_right = 600.0
+offset_bottom = 70.0
+custom_minimum_size = Vector2( 150, 0 )
 size_flags_horizontal = 5
 size_flags_vertical = 4
-custom_colors/default_color = Color( 0.164706, 0.631373, 0.596078, 1 )
-custom_constants/line_separation = 5
-custom_fonts/normal_font = ExtResource( 3 )
+theme_override_colors/default_color = Color( 0.164706, 0.631373, 0.596078, 1 )
+theme_override_constants/line_separation = 5
+theme_override_fonts/normal_font = ExtResource( 3 )
 bbcode_enabled = true
-bbcode_text = "[center]A PROTOTYPE OF WATER SORT PUZZLE[/center]"
+text = "[center]A PROTOTYPE OF WATER SORT PUZZLE[/center]"
 text = "A PROTOTYPE OF WATER SORT PUZZLE"
 fit_content_height = true
 __meta__ = {
@@ -92,69 +92,69 @@ __meta__ = {
 }
 
 [node name="ScrollContainer" type="ScrollContainer" parent="MainHBox/MainVBox"]
-margin_top = 90.0
-margin_right = 600.0
-margin_bottom = 480.0
-rect_min_size = Vector2( 0, 380 )
+offset_top = 90.0
+offset_right = 600.0
+offset_bottom = 480.0
+custom_minimum_size = Vector2( 0, 380 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
 scroll_horizontal_enabled = false
 
 [node name="LevelSelection" type="VBoxContainer" parent="MainHBox/MainVBox/ScrollContainer"]
-margin_right = 600.0
-margin_bottom = 390.0
-rect_min_size = Vector2( 600, 0 )
+offset_right = 600.0
+offset_bottom = 390.0
+custom_minimum_size = Vector2( 600, 0 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_constants/separation = 5
+theme_override_constants/separation = 5
 
 [node name="HBoxContainer" type="HBoxContainer" parent="MainHBox/MainVBox"]
-margin_top = 500.0
-margin_right = 600.0
-margin_bottom = 540.0
+offset_top = 500.0
+offset_right = 600.0
+offset_bottom = 540.0
 alignment = 1
 
 [node name="ButtonImport" type="Button" parent="MainHBox/MainVBox/HBoxContainer"]
-margin_right = 140.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 100, 40 )
+offset_right = 140.0
+offset_bottom = 40.0
+custom_minimum_size = Vector2( 100, 40 )
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0.933333, 0.909804, 0.835294, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+theme_override_colors/font_color = Color( 0.933333, 0.909804, 0.835294, 1 )
+theme_override_colors/font_hover_color = Color( 1, 1, 1, 1 )
 text = "Import a level"
 
 [node name="VSeparator" type="VSeparator" parent="MainHBox/MainVBox/HBoxContainer"]
-margin_left = 144.0
-margin_right = 436.0
-margin_bottom = 40.0
+offset_left = 144.0
+offset_right = 436.0
+offset_bottom = 40.0
 size_flags_horizontal = 3
 
 [node name="ButtonRLG" type="Button" parent="MainHBox/MainVBox/HBoxContainer"]
-margin_left = 440.0
-margin_right = 600.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 100, 40 )
-hint_tooltip = "Random classic water puzzle level"
+offset_left = 440.0
+offset_right = 600.0
+offset_bottom = 40.0
+custom_minimum_size = Vector2( 100, 40 )
+tooltip_text = "Random classic water puzzle level"
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource( 4 )
-custom_colors/font_color = Color( 0.933333, 0.909804, 0.835294, 1 )
-custom_colors/font_color_hover = Color( 1, 1, 1, 1 )
+theme_override_colors/font_color = Color( 0.933333, 0.909804, 0.835294, 1 )
+theme_override_colors/font_hover_color = Color( 1, 1, 1, 1 )
 text = "Generate a level"
 
 [node name="Container2" type="Container" parent="MainHBox"]
-margin_left = 816.0
-margin_right = 816.0
+offset_left = 816.0
+offset_right = 816.0
 size_flags_horizontal = 2
 size_flags_vertical = 2
 
-[node name="DialogImport" type="WindowDialog" parent="."]
-margin_right = 800.0
-margin_bottom = 420.0
+[node name="DialogImport" type="Window" parent="."]
+offset_right = 800.0
+offset_bottom = 420.0
 theme = ExtResource( 6 )
-popup_exclusive = true
+exclusive = true
 window_title = "CUSTOM LEVEL"
 resizable = true
 __meta__ = {
@@ -164,98 +164,98 @@ __meta__ = {
 [node name="MarginCont" type="MarginContainer" parent="DialogImport"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 5.0
-margin_right = -10.0
-margin_bottom = -5.0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = -10.0
+offset_bottom = -5.0
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="VBoxCont" type="VBoxContainer" parent="DialogImport/MarginCont"]
-margin_right = 780.0
-margin_bottom = 410.0
-custom_constants/separation = 5
+offset_right = 780.0
+offset_bottom = 410.0
+theme_override_constants/separation = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="InputText" type="TextEdit" parent="DialogImport/MarginCont/VBoxCont"]
-margin_right = 780.0
-margin_bottom = 365.0
-rect_min_size = Vector2( 0, 50 )
+offset_right = 780.0
+offset_bottom = 365.0
+custom_minimum_size = Vector2( 0, 50 )
 size_flags_horizontal = 3
 size_flags_vertical = 3
-custom_colors/font_color = Color( 0.933333, 0.909804, 0.835294, 1 )
-custom_fonts/font = ExtResource( 3 )
-custom_styles/focus = ExtResource( 5 )
-custom_styles/normal = ExtResource( 5 )
+theme_override_colors/font_color = Color( 0.933333, 0.909804, 0.835294, 1 )
+theme_override_fonts/font = ExtResource( 3 )
+theme_override_styles/focus = ExtResource( 5 )
+theme_override_styles/normal = ExtResource( 5 )
 wrap_enabled = true
 caret_blink = true
 
 [node name="MarginContainer" type="MarginContainer" parent="DialogImport/MarginCont/VBoxCont"]
-margin_top = 370.0
-margin_right = 780.0
-margin_bottom = 410.0
+offset_top = 370.0
+offset_right = 780.0
+offset_bottom = 410.0
 size_flags_horizontal = 3
-custom_constants/margin_right = 10
-custom_constants/margin_left = 70
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_left = 70
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="HBoxCont" type="HBoxContainer" parent="DialogImport/MarginCont/VBoxCont/MarginContainer"]
-margin_left = 70.0
-margin_right = 770.0
-margin_bottom = 40.0
-rect_min_size = Vector2( 0, 40 )
+offset_left = 70.0
+offset_right = 770.0
+offset_bottom = 40.0
+custom_minimum_size = Vector2( 0, 40 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="Container" type="CenterContainer" parent="DialogImport/MarginCont/VBoxCont/MarginContainer/HBoxCont"]
-margin_right = 596.0
-margin_bottom = 40.0
+offset_right = 596.0
+offset_bottom = 40.0
 size_flags_horizontal = 3
 
 [node name="ButtonPlay" type="Button" parent="DialogImport/MarginCont/VBoxCont/MarginContainer/HBoxCont/Container"]
-margin_left = 248.0
-margin_top = 5.0
-margin_right = 348.0
-margin_bottom = 35.0
-rect_min_size = Vector2( 100, 30 )
-hint_tooltip = "Delete all text except level JSON before pressing"
+offset_left = 248.0
+offset_top = 5.0
+offset_right = 348.0
+offset_bottom = 35.0
+custom_minimum_size = Vector2( 100, 30 )
+tooltip_text = "Delete all text except level JSON before pressing"
 size_flags_horizontal = 4
 theme = ExtResource( 4 )
 text = " PLAY "
 
 [node name="ButtonHelp" type="Button" parent="DialogImport/MarginCont/VBoxCont/MarginContainer/HBoxCont"]
-margin_left = 600.0
-margin_top = 5.0
-margin_right = 700.0
-margin_bottom = 35.0
-rect_min_size = Vector2( 100, 30 )
-hint_tooltip = "Shows help erasing your edits"
+offset_left = 600.0
+offset_top = 5.0
+offset_right = 700.0
+offset_bottom = 35.0
+custom_minimum_size = Vector2( 100, 30 )
+tooltip_text = "Shows help erasing your edits"
 size_flags_horizontal = 4
 size_flags_vertical = 4
 theme = ExtResource( 4 )
 text = "View help"
 
-[node name="DialogRLGSettings" type="WindowDialog" parent="."]
+[node name="DialogRLGSettings" type="Window" parent="."]
 visible = true
-margin_right = 470.0
-margin_bottom = 344.0
+offset_right = 470.0
+offset_bottom = 344.0
 theme = ExtResource( 6 )
-popup_exclusive = true
+exclusive = true
 window_title = "SET RANDOM LEVEL"
 
 [node name="MarginCont" type="MarginContainer" parent="DialogRLGSettings"]
 anchor_right = 1.0
 anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = 5.0
-margin_right = -8.0
-margin_bottom = -13.0
+offset_left = 10.0
+offset_top = 5.0
+offset_right = -8.0
+offset_bottom = -13.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 __meta__ = {
@@ -263,105 +263,105 @@ __meta__ = {
 }
 
 [node name="VBoxCont" type="VBoxContainer" parent="DialogRLGSettings/MarginCont"]
-margin_right = 452.0
-margin_bottom = 326.0
-custom_constants/separation = 5
+offset_right = 452.0
+offset_bottom = 326.0
+theme_override_constants/separation = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="MarginContainer5" type="MarginContainer" parent="DialogRLGSettings/MarginCont/VBoxCont"]
-margin_right = 452.0
-margin_bottom = 31.0
+offset_right = 452.0
+offset_bottom = 31.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 
 [node name="MarginContainer4" type="MarginContainer" parent="DialogRLGSettings/MarginCont/VBoxCont"]
-margin_top = 36.0
-margin_right = 452.0
-margin_bottom = 145.0
+offset_top = 36.0
+offset_right = 452.0
+offset_bottom = 145.0
 size_flags_horizontal = 3
 
 [node name="LabelAbout" type="Label" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer4"]
-margin_right = 452.0
-margin_bottom = 109.0
+offset_right = 452.0
+offset_bottom = 109.0
 size_flags_horizontal = 5
 text = "Classic water puzzle level contains several same-volume tubes, two of them are empty while others are filled randomly."
 align = 1
 autowrap = true
 
 [node name="MarginContainer2" type="MarginContainer" parent="DialogRLGSettings/MarginCont/VBoxCont"]
-margin_left = 119.0
-margin_top = 150.0
-margin_right = 332.0
-margin_bottom = 200.0
-rect_min_size = Vector2( 0, 50 )
+offset_left = 119.0
+offset_top = 150.0
+offset_right = 332.0
+offset_bottom = 200.0
+custom_minimum_size = Vector2( 0, 50 )
 size_flags_horizontal = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer2"]
-margin_right = 213.0
-margin_bottom = 50.0
+offset_right = 213.0
+offset_bottom = 50.0
 
 [node name="Label" type="Label" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer2/HBoxContainer"]
-margin_top = 12.0
-margin_right = 209.0
-margin_bottom = 37.0
+offset_top = 12.0
+offset_right = 209.0
+offset_bottom = 37.0
 text = "Set number of tubes"
 
 [node name="ItemListNumber" type="ItemList" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer2/HBoxContainer"]
-margin_left = 213.0
-margin_right = 213.0
-margin_bottom = 50.0
+offset_left = 213.0
+offset_right = 213.0
+offset_bottom = 50.0
 allow_rmb_select = true
 
 [node name="MarginContainer3" type="MarginContainer" parent="DialogRLGSettings/MarginCont/VBoxCont"]
-margin_left = 136.0
-margin_top = 205.0
-margin_right = 316.0
-margin_bottom = 255.0
-rect_min_size = Vector2( 0, 50 )
+offset_left = 136.0
+offset_top = 205.0
+offset_right = 316.0
+offset_bottom = 255.0
+custom_minimum_size = Vector2( 0, 50 )
 size_flags_horizontal = 4
 
 [node name="HBoxContainer" type="HBoxContainer" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer3"]
-margin_right = 180.0
-margin_bottom = 50.0
+offset_right = 180.0
+offset_bottom = 50.0
 
 [node name="Label" type="Label" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer3/HBoxContainer"]
-margin_top = 12.0
-margin_right = 176.0
-margin_bottom = 37.0
+offset_top = 12.0
+offset_right = 176.0
+offset_bottom = 37.0
 text = "Set tubes volume"
 
 [node name="ItemListVolume" type="ItemList" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer3/HBoxContainer"]
-margin_left = 180.0
-margin_right = 180.0
-margin_bottom = 50.0
+offset_left = 180.0
+offset_right = 180.0
+offset_bottom = 50.0
 
 [node name="MarginContainer" type="MarginContainer" parent="DialogRLGSettings/MarginCont/VBoxCont"]
-margin_top = 260.0
-margin_right = 452.0
-margin_bottom = 290.0
+offset_top = 260.0
+offset_right = 452.0
+offset_bottom = 290.0
 size_flags_horizontal = 3
-custom_constants/margin_right = 10
-custom_constants/margin_left = 70
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_left = 70
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="ButtonPlay" type="Button" parent="DialogRLGSettings/MarginCont/VBoxCont/MarginContainer"]
-margin_left = 206.0
-margin_right = 306.0
-margin_bottom = 30.0
-rect_min_size = Vector2( 100, 30 )
-hint_tooltip = "Delete all text except level JSON before pressing"
+offset_left = 206.0
+offset_right = 306.0
+offset_bottom = 30.0
+custom_minimum_size = Vector2( 100, 30 )
+tooltip_text = "Delete all text except level JSON before pressing"
 size_flags_horizontal = 4
 theme = ExtResource( 4 )
 text = " PLAY "
 
 [node name="MarginContainer6" type="MarginContainer" parent="DialogRLGSettings/MarginCont/VBoxCont"]
-margin_top = 295.0
-margin_right = 452.0
-margin_bottom = 326.0
+offset_top = 295.0
+offset_right = 452.0
+offset_bottom = 326.0
 size_flags_horizontal = 3
 size_flags_vertical = 3
 

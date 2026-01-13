@@ -6,40 +6,13 @@
 ;   [section] ; section goes between []
 ;   param=value ; assign values to parameters
 
-config_version=4
-
-_global_script_classes=[ {
-"base": "Node",
-"class": "Game",
-"language": "GDScript",
-"path": "res://scripts/Game.gd"
-}, {
-"base": "",
-"class": "GitAPI",
-"language": "NativeScript",
-"path": "res://addons/godot-git-plugin/git_api.gdns"
-}, {
-"base": "GDScript",
-"class": "Level",
-"language": "GDScript",
-"path": "res://scripts/level.gd"
-}, {
-"base": "GDScript",
-"class": "Tube",
-"language": "GDScript",
-"path": "res://scripts/tube.gd"
-} ]
-_global_script_class_icons={
-"Game": "",
-"GitAPI": "",
-"Level": "",
-"Tube": ""
-}
+config_version=5
 
 [application]
 
 config/name="Test-tubes"
 run/main_scene="res://scenes/Menu.tscn"
+config/features=PackedStringArray("4.5")
 config/icon="res://icon.png"
 
 [autoload]
@@ -53,5 +26,5 @@ version_control_plugin_name="GitAPI"
 
 [rendering]
 
+environment/defaults/default_environment="res://default_env.tres"
 quality/driver/driver_name="GLES2"
-environment/default_environment="res://default_env.tres"

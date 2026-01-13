@@ -11,8 +11,8 @@ class_name Game
 #var tubes: Array = []
 var l: Level
 
-var _operations_counter: int = 0 setget add_a_pour, get_pours
-var _volume_counter: int = 0 setget add_a_pour_volume, get_pours_volume
+var _operations_counter: int = 0: get = get_pours, set = add_a_pour
+var _volume_counter: int = 0: get = get_pours_volume, set = add_a_pour_volume
 
 
 func _init() -> void:
@@ -50,7 +50,7 @@ func pour(source: int, from_neck: bool, target: int) -> bool:
 		pouring = l.get_tube(source).drain_a_bottom_portion()
 	var return_pouring: Array = pouring.duplicate()
 	return_pouring = l.get_tube(target).add_a_portion(return_pouring)
-	if (!pouring.empty() && return_pouring.empty()) || return_pouring.size() < pouring.size():
+	if (!pouring.is_empty() && return_pouring.is_empty()) || return_pouring.size() < pouring.size():
 		add_a_pour()
 		add_a_pour_volume(pouring.size() - return_pouring.size())
 		is_success = true

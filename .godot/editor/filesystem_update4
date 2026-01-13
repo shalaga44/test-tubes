@@ -1,0 +1,9 @@
+res://default_env.tres
+res://scripts/GameScene.gd
+res://scripts/Globals.gd
+res://scripts/level.gd
+res://scripts/level_label.gd
+res://scripts/Menu.gd
+res://scripts/PortionScene.gd
+res://scripts/tube.gd
+res://scripts/TubeScene.gd

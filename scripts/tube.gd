@@ -1,13 +1,13 @@
-extends GDScript
+extends RefCounted
 class_name Tube
 
 # number of portions can contain
-var _volume: int = 0 setget set_volume, get_volume
+var _volume: int = 0: get = get_volume, set = set_volume
 
 enum DRAINS {NECK, BOTTOM, BOTH}
 var drains: int = DRAINS.NECK
 
-var _content: Array = [] setget set_content, get_content
+var _content: Array = []: get = get_content, set = set_content
 
 
 func _init():
@@ -21,53 +21,67 @@ func set_volume(volume: int = 0) -> void:
 	if volume > Globals.MAX_TUBE_VOLUME:
 		print_debug("Invalid volume (%s), setting to max" % volume)
 		volume = Globals.MAX_TUBE_VOLUME
-	if volume == 0:
-		_volume = randi() % Globals.MAX_TUBE_VOLUME + 1
-	_volume = volume
+
+	# Do not allow changing volume for a non-empty tube
 	if !is_empty():
 		print_debug("This tube is not empty, couldn't change it's size")
 		return
+
+	# If 0, pick random 1..MAX_TUBE_VOLUME
+	if volume == 0:
+		_volume = randi() % Globals.MAX_TUBE_VOLUME + 1
+	else:
+		_volume = volume
+
 	_content.resize(_volume)
-	
-	
+	if _content.is_empty():
+		_content.resize(_volume)
+
+
 func get_volume() -> int:
 	return _volume
-	
-	
+
+
 func is_empty() -> bool:
-	#print_debug(get_content())
-	if _content.empty() || _content.back() == null || _content.back() == 0:
+	if _content.is_empty():
+		return true
+	if _content.back() == null or _content.back() == 0:
 		return true
 	return false
-	
-	
+
+
 func set_content(new_content: Array) -> bool:
-	if new_content.empty():
+	if new_content.is_empty():
 		print_debug("New content is empty")
 		return false
 	if new_content.size() != get_volume():
-		print_debug("Invalid content size, it's doesn't match tube's volume")
+		print_debug("Invalid content size, it doesn't match tube's volume")
 		return false
+
 	for each in new_content:
-		if each < 0 || each > Globals.MAX_COLORS:
+		if !(typeof(each) == TYPE_FLOAT or typeof(each) == TYPE_INT):
+			print_debug("Invalid color value type: ", typeof(each))
+			return false
+		var c: int = int(each)
+		if c < 0 or c > Globals.MAX_COLORS:
 			print_debug("Invalid color value: ", each)
 			return false
-		
+
 	_content.resize(new_content.size())
 	for i in new_content.size():
 		_content[i] = int(new_content[i])
 	return true
-	
-	
+
+
 # CAREFUL! returns the reference to the _content array
 func get_content() -> Array:
-	if _content.empty():
+	if _content.is_empty():
 		_content.resize(get_volume())
 		for i in _content.size():
 			_content[i] = 0
 	return _content
-	
-	
+
+
 # portion = [1, 1, 1]
 func add_a_portion(por: Array) -> Array:
 	if drains == DRAINS.BOTTOM:
@@ -81,14 +95,14 @@ func add_a_portion(por: Array) -> Array:
 	if por.size() > Globals.MAX_TUBE_VOLUME:
 		print_debug("Portion size is bigger than tube's size: ", por.size())
 		return por
-	if get_top_color() != 0 && get_top_color() != por[0]:
+	if get_top_color() != 0 and get_top_color() != por[0]:
 		print_debug("Source portion color doesn't match target's top color")
 		Globals.send_message("Portion color doesn't match tube's top color")
 		return por
 	if por.size() > get_empty_volume():
 		print_debug("There is not enough empty volume to add such size")
 		return divide_a_portion(por)
-		
+
 	var empty_space: int = 0
 	for i in get_volume():
 		if _content[i] == 0:
@@ -103,19 +117,19 @@ func add_a_portion(por: Array) -> Array:
 
 # add what's fit and returns what's not 
 func divide_a_portion(por: Array) -> Array:
-	if por.empty():
+	if por.is_empty():
 		print_debug("Empty portion, can't divide")
 		return []
 	var fitted_part: Array = por.duplicate()
 	fitted_part.resize(get_empty_volume())
 	var fitted_size: int = fitted_part.size()
 	fitted_part = add_a_portion(fitted_part)
-	if !fitted_part.empty():
+	if !fitted_part.is_empty():
 		print_debug("Error while adding smaller portion, returning full portion")
 		return por
 	por.resize(por.size() - fitted_size)
 	return por
-	
+
 
 # only from the neck
 func drain_a_portion() -> Array:
@@ -125,17 +139,18 @@ func drain_a_portion() -> Array:
 		return por
 	if is_empty():
 		return por
-	#var por_color: int = get_top_color()
+
 	var before: Array = get_content()
 	for each in before:
 		if each == 0:
 			continue
-		if each != 0 && por.empty():
+		if each != 0 and por.is_empty():
 			por.append(each)
 		elif each == por[0]:
 			por.append(each)
 		else:
 			break
+
 	for i in before.size():
 		if before[i] == 0:
 			continue
@@ -143,11 +158,12 @@ func drain_a_portion() -> Array:
 			before[i] = 0
 		else:
 			break
+
 	if !set_content(before):
 		print_debug("Error while draining")
 		return []
 	return por
-	
+
 
 func get_empty_volume() -> int:
 	if is_empty():
@@ -170,30 +186,31 @@ func drain_a_bottom_portion() -> Array:
 		return por
 	if is_empty():
 		return por
+
 	var before: Array = get_content()
 	for i in range(before.size() - 1, -1, -1):
 		if before[i] == 0:
-			#print_debug("It can't be true!")
 			continue
-		if before[i] != 0 && por.empty():
+		if before[i] != 0 and por.is_empty():
 			por.append(before[i])
 		elif before[i] == por[0]:
 			por.append(before[i])
 		else:
 			break
+
 	var after: Array = []
 	after.resize(before.size())
 	for i in range(after.size() - 1, -1, -1):
 		if i - por.size() >= 0:
 			after[i] = before[i - por.size()]
-			continue
 		else:
 			after[i] = 0
+
 	if !set_content(after):
 		print_debug("Error while draining from bottom")
 		return []
 	return por
-	
+
 
 func get_top_color() -> int:
 	if is_empty():
@@ -207,12 +224,12 @@ func get_top_color() -> int:
 
 # if adding was refused or partially returned
 func restore_portion(por: Array) -> void:
-	if por.empty():
+	if por.is_empty():
 		return
 	if por.size() > get_empty_volume():
 		print_debug("Portion size is invalid", por.size())
 		return
-		
+
 	var empty_space: int = 0
 	for i in get_volume():
 		if _content[i] == 0:
@@ -226,16 +243,16 @@ func restore_portion(por: Array) -> void:
 
 
 func restore_bottom_portion(por: Array) -> void:
-	if por.empty():
+	if por.is_empty():
 		return
 	if por.size() > get_empty_volume():
 		print_debug("Portion size is invalid", por.size())
 		return
-		
+
 	var before: Array = get_content()
 	var after: Array = []
 	after.resize(before.size())
-	
+
 	var j: int = por.size() - 1
 	for i in range(after.size() - 1, -1, -1):
 		if j >= 0:
@@ -243,9 +260,6 @@ func restore_bottom_portion(por: Array) -> void:
 			j -= 1
 		else:
 			after[i] = before[i + por.size()]
-			
+
 	if !set_content(after):
 		print_debug("Error while draining from bottom")
-
-
-

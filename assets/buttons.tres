@@ -1,12 +1,12 @@
 [gd_resource type="Theme" load_steps=7 format=2]
 
-[ext_resource path="res://assets/fonts/JetBrainsMonoNL-Regular.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://assets/fonts/JetBrainsMonoNL-Regular.ttf" type="FontFile" id=1]
 [ext_resource path="res://assets/button_hover_styleboxflat.tres" type="StyleBox" id=2]
 [ext_resource path="res://assets/button_normal_styleboxflat.tres" type="StyleBox" id=3]
 [ext_resource path="res://assets/button_focus_styleboxflat.tres" type="StyleBox" id=4]
 [ext_resource path="res://assets/button_pressed_styleboxflat.tres" type="StyleBox" id=5]
 
-[sub_resource type="DynamicFont" id=1]
+[sub_resource type="FontFile" id=1]
 font_data = ExtResource( 1 )
 
 [resource]
